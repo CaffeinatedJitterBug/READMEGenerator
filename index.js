@@ -1,33 +1,34 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
-const { default: CheckboxPrompt } = require('inquirer/lib/prompts/checkbox');
 // TODO: Create an array of questions for user input
 const questions = [
     "What do you want to call your project?", 
     "Please write a short description of your project.", 
-    "What would you like to put into your table of contents? (Press ENTER after each item. Input 'done' when finished)", 
     "What are the steps required to install your project?", 
-    "What are the steps to use your project?", 
-    "Who were your collaboratos? (Write the name of each collaborator and their github link if they have one)",  
-    "What license is applied to your project?", 
-    "What badge(s) do you want to apply to your project?", 
-    "What features does your project have?", 
-    "How can other developers contribute to this project?" 
+    "What are the usage instructions for your project?",
+    "How can other developers contribute to this project?",
+    "What tests can users use on your project?",
+    "What license is applied to your project?",
+    "What is your GitHub?",
+    "What is your email?"
     ]
 
-let string = "";
+
+
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {}
 
 // TODO: Create a function to initialize app
 function init() {
+    const contentArray = []
+    let string = "";
     inquirer
         .prompt([
             {
                 type: 'input',
                 message: questions[0],
-                name: 'project-name'
+                name: 'name'
             },
             {
                 type: 'input',
@@ -37,44 +38,76 @@ function init() {
             {
                 type: 'input',
                 message: questions[2],
-                name: 'contents'
-            },
-            {
-                type: 'input',
-                message: questions[3],
                 name: 'installation'
             },
             {
                 type: 'input',
-                message: questions[4],
+                message: questions[3],
                 name: 'usage'
             },
             {
                 type: 'input',
+                message: questions[4],
+                name: 'contributions'
+            },
+            {
+                type: 'input',
                 message: questions[5],
-                name: 'credits'
+                name: 'test'
             },
             {
                 type: 'input',
                 message: questions[6],
-                name: 'license'
+                name: 'license',
             },
             {
-                type: 'checkbox',
+                type: 'input',
                 message: questions[7],
-                name: 'badges'
+                name: 'github'
             },
             {
                 type: 'input',
                 message: questions[8],
-                name: 'features'
-            },
-            {
-                type: 'input',
-                message: questions[9],
-                name: 'contributions'
+                name: 'email'
             }
         ])
+        .then((response) => {
+            const defaultText = [
+                "#", 
+                "## Description", 
+                "## Table of Contents<br>Installation<br>Usage<br>Contributing<br>Testing<br>License<br>Questions",
+                "## Installation",
+                "## Usage",
+                "## Contributions",
+                "## Testing",
+                "## License",
+                "## Questions",
+            ]
+
+            const props = []
+
+            for (let ans in response) {
+                props.push(response[ans])
+            }
+
+            const tempArray = [];
+            for (let x=0; x<9; x++) {
+                if (x === 0) {
+                    tempArray.push(defaultText[x], props[x])
+                    contentArray.push(tempArray.join(' '))
+                } else if (x === 1) {
+                    contentArray.push(defaultText[x], props[x])
+                }
+                else if (x === 2) {
+                    contentArray.push(defaultText[2])
+                } else if (x === 8) {
+                    contentArray.push(defaultText[x], props[x-1], props[x])
+                } else {
+                    contentArray.push(defaultText[x], props[x-1])
+                }
+            }
+            console.log(contentArray)
+        }); 
 }
 
 // Function call to initialize app
