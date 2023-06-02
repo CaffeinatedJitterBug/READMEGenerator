@@ -17,11 +17,15 @@ const questions = [
 
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    const str = data.join('<br><br>');
+    fs.writeFile(fileName, str, (err) =>
+        err ? console.error(err) : console.log('README file generated successfully')
+    );
+}
 
 // TODO: Create a function to initialize app
 function init() {
-    const contentArray = []
     let string = "";
     inquirer
         .prompt([
@@ -85,12 +89,13 @@ function init() {
             ]
 
             const props = []
+            const contentArray = []
 
             for (let ans in response) {
                 props.push(response[ans])
             }
 
-            const tempArray = [];
+            const tempArray = []
             for (let x=0; x<9; x++) {
                 if (x === 0) {
                     tempArray.push(defaultText[x], props[x])
@@ -106,7 +111,7 @@ function init() {
                     contentArray.push(defaultText[x], props[x-1])
                 }
             }
-            console.log(contentArray)
+            writeToFile('README.md', contentArray)
         }); 
 }
 
