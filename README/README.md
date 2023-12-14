@@ -1,5 +1,7 @@
 # README Generator
 
+![A screenshot of the README Generator](../assets/images/Screenshot%20(14).png)
+
 ## Description
 README Generator is a program designed to help busy developers quickly write up README files for their projects.
 
